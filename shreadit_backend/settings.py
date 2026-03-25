@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 
+from shreadit_backend.shreadit_settings import shreadit_settings
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,17 +22,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=%d19d2&asn#m76z^(d^wx-a3ya$+skytum=+kynngyim_qp*a'
+SECRET_KEY = shreadit_settings.secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = shreadit_settings.debug
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [shreadit_settings.frontend_url]
 
+AUTH_USER_MODEL=('shreadit.User')
 
 # Application definition
 
 INSTALLED_APPS = [
+    'shreadit.apps.ShreaditConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -67,15 +71,25 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'shreadit_backend.wsgi.application'
-
-
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': shreadit_settings.db_name,
+        'USER': shreadit_settings.db_user,
+        'PASSWORD': shreadit_settings.db_password,
+        'HOST': shreadit_settings.db_host,
+        'PORT': shreadit_settings.db_port,
+    },
+    'migrations': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': shreadit_settings.db_name,
+        'USER': shreadit_settings.db_migration_user,
+        'PASSWORD': shreadit_settings.db_migration_password,
+        'HOST': shreadit_settings.db_host,
+        'PORT': shreadit_settings.db_port,
     }
 }
 
