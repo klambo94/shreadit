@@ -2,3 +2,4 @@
 .idea
 /shreadit/migrations/
 .env*
+setup_roles.sql
